@@ -38,7 +38,17 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. User sees a CSS-level CRT treatment on 2D panels that is visibly present but leaves data text fully legible
   5. User can read a legend explaining what each palette color means
   6. User can reduce or turn off the CRT effect from a visible in-theme control, and the choice holds for the session
-**Plans**: TBD
+**Plans**: 7 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Next.js 16 App Router without a utility-CSS framework, and reconcile the installed Next.js docs against the stack research
+- [ ] 01-02-PLAN.md — Tracer: end-to-end terminal slice — VT323, semantic tokens, one ASCII-chrome panel, the fixed CRT overlay and a persisting intensity control
+- [ ] 01-03-PLAN.md — Panel tier scale from the measured character advance, deterministic truncation, eight-row overflow cap and the sub-compact degrade path
+- [ ] 01-04-PLAN.md — Typed NeoWs/DONKI payload types, realistic-density mock fixtures, and the Alert component with the fixed terminal grammar
+- [ ] 01-05-PLAN.md — Populated NEO FEED and SPACE WEATHER panels mounted in the shell
+- [ ] 01-06-PLAN.md — Palette legend strip explaining the colour semantics, hosting the CRT intensity control
+- [ ] 01-07-PLAN.md — Scene placeholder at reserved canvas dimensions plus the single-breakpoint responsive contract
+
 **UI hint**: yes
 
 ### Phase 2: React↔Three.js Render Boundary
@@ -184,7 +194,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Terminal Design System & App Shell | 0/TBD | Not started | - |
+| 1. Terminal Design System & App Shell | 0/7 | Not started | - |
 | 2. React↔Three.js Render Boundary | 0/TBD | Not started | - |
 | 3. NASA Data Layer & Resilience | 0/TBD | Not started | - |
 | 4. Asteroid Classifier Panel | 0/TBD | Not started | - |
