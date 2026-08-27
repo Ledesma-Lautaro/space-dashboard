@@ -72,7 +72,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Responsive y Accesibilidad
 
-- [ ] **RESP-01**: Dashboard is usable on mobile and desktop as a single screen with scroll, with no separate routes
+- [x] **RESP-01**: Dashboard is usable on mobile and desktop as a single screen with scroll, with no separate routes
 - [ ] **RESP-02**: 3D canvas resizes correctly on viewport and orientation change without distorting the camera aspect ratio
 - [ ] **RESP-03**: Mobile browser chrome (dynamic viewport height) does not clip the canvas or the panels
 - [ ] **RESP-04**: A legend explains what the CRT color coding means
@@ -168,7 +168,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATA-06 | Phase 3 | Pending |
 | DATA-07 | Phase 3 | Pending |
 | DATA-08 | Phase 3 | Pending |
-| RESP-01 | Phase 1 | Pending |
+| RESP-01 | Phase 1 | Complete |
 | RESP-02 | Phase 2 | Pending |
 | RESP-03 | Phase 12 | Pending |
 | RESP-04 | Phase 1 | Pending |
@@ -194,6 +194,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | 12. Real-Device Hardening, Deploy & Case Study | RESP-03, SHIP-01, SHIP-02, SHIP-03 | 4 |
 
 **Coverage:**
+
 - v1 requirements: 52 total
 - Mapped to phases: 52
 - Unmapped: 0
