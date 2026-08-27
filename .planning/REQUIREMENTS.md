@@ -122,13 +122,80 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (pending roadmap creation) | — | Pending |
+| NEO-01 | Phase 4 | Pending |
+| NEO-02 | Phase 4 | Pending |
+| NEO-03 | Phase 4 | Pending |
+| NEO-04 | Phase 4 | Pending |
+| NEO-05 | Phase 4 | Pending |
+| NEO-06 | Phase 4 | Pending |
+| NEO-07 | Phase 4 | Pending |
+| SW-01 | Phase 5 | Pending |
+| SW-02 | Phase 5 | Pending |
+| SW-03 | Phase 5 | Pending |
+| SW-04 | Phase 5 | Pending |
+| SW-05 | Phase 5 | Pending |
+| SW-06 | Phase 5 | Pending |
+| SCENE-01 | Phase 6 | Pending |
+| SCENE-02 | Phase 6 | Pending |
+| SCENE-03 | Phase 2 | Pending |
+| SCENE-04 | Phase 2 | Pending |
+| SCENE-05 | Phase 7 | Pending |
+| SCENE-06 | Phase 8 | Pending |
+| SCENE-07 | Phase 7 | Pending |
+| SCENE-08 | Phase 6 | Pending |
+| SCENE-09 | Phase 2 | Pending |
+| PICK-01 | Phase 9 | Pending |
+| PICK-02 | Phase 10 | Pending |
+| PICK-03 | Phase 10 | Pending |
+| PICK-04 | Phase 9 | Pending |
+| PICK-05 | Phase 10 | Pending |
+| CRT-01 | Phase 11 | Pending |
+| CRT-02 | Phase 1 | Pending |
+| CRT-03 | Phase 1 | Pending |
+| CRT-04 | Phase 1 | Pending |
+| CRT-05 | Phase 1 | Pending |
+| CRT-06 | Phase 11 | Pending |
+| CRT-07 | Phase 11 | Pending |
+| CRT-08 | Phase 11 | Pending |
+| CRT-09 | Phase 11 | Pending |
+| DATA-01 | Phase 3 | Pending |
+| DATA-02 | Phase 3 | Pending |
+| DATA-03 | Phase 3 | Pending |
+| DATA-04 | Phase 3 | Pending |
+| DATA-05 | Phase 3 | Pending |
+| DATA-06 | Phase 3 | Pending |
+| DATA-07 | Phase 3 | Pending |
+| DATA-08 | Phase 3 | Pending |
+| RESP-01 | Phase 1 | Pending |
+| RESP-02 | Phase 2 | Pending |
+| RESP-03 | Phase 12 | Pending |
+| RESP-04 | Phase 1 | Pending |
+| SHIP-01 | Phase 12 | Pending |
+| SHIP-02 | Phase 12 | Pending |
+| SHIP-03 | Phase 12 | Pending |
+
+**Per-phase totals:**
+
+| Phase | Requirements | Count |
+|-------|--------------|-------|
+| 1. Terminal Design System & App Shell | CRT-02, CRT-03, CRT-04, CRT-05, RESP-01, RESP-04 | 6 |
+| 2. React<->Three.js Render Boundary | SCENE-03, SCENE-04, SCENE-09, RESP-02 | 4 |
+| 3. NASA Data Layer & Resilience | DATA-01..DATA-08 | 8 |
+| 4. Asteroid Classifier Panel | NEO-01..NEO-07 | 7 |
+| 5. Space Weather Panel & Timeline | SW-01..SW-06 | 6 |
+| 6. Static Solar System Scene Graph | SCENE-01, SCENE-02, SCENE-08 | 3 |
+| 7. Data-Driven Scene Layers | SCENE-05, SCENE-07 | 2 |
+| 8. True Orbital Ellipses | SCENE-06 | 1 |
+| 9. Raycasting & Selection | PICK-01, PICK-04 | 2 |
+| 10. HUD Overlay & Bidirectional Selection | PICK-02, PICK-03, PICK-05 | 3 |
+| 11. CRT Postprocessing Chain | CRT-01, CRT-06, CRT-07, CRT-08, CRT-09 | 5 |
+| 12. Real-Device Hardening, Deploy & Case Study | RESP-03, SHIP-01, SHIP-02, SHIP-03 | 4 |
 
 **Coverage:**
 - v1 requirements: 51 total
-- Mapped to phases: 0
-- Unmapped: 51 ⚠️
+- Mapped to phases: 51
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-08-26*
-*Last updated: 2026-08-26 after initial definition*
+*Last updated: 2026-08-26 after roadmap creation (12 phases, 51/51 mapped)*
