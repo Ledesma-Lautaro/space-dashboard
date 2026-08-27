@@ -1,0 +1,1 @@
+{"content":"Three.js latest npm version verified directly via unpkg package.json: 0.185.1 (r185). Package uses type module with an exports map; no semver-major versioning, each 0.1xx revision can break addon APIs.","source":"web","provider":"webfetch","confidence":"LOW","fetched_at":"2026-08-26T23:56:17.047Z","ttl":86400000,"kind":"web"}
