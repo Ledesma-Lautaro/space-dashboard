@@ -242,31 +242,39 @@ Rendered inside a `LEGEND` panel at the `48ch` tier (not the `32ch` compact tier
 
 ## UI Considerations
 
-> Populated by the ui-phase UI-consideration probe (Step 9.5). Shape-rooted UI *state* coverage
-> across this phase's elements: `panel-list` (list-collection — NEO/DONKI mock panels),
-> `alert-feed` (list-collection — Alert bulletins, D-15), `crt-control` (interactive-control,
-> D-20), `canvas-placeholder` (static-content, D-10), `legend` (static-content, RESP-04).
-> Rows below consolidate shared resolutions across elements where the same reasoning applies
-> to more than one (dismissal-with-reason and concrete-resolution are both recorded as ✅
-> covered, differing only in the Resolution/Reason text — this phase raised 21 category×element
-> instances across 8 categories, consolidated into 12 rows).
+> Produced by the ui-phase UI-consideration probe (Step 9.5) after checker approval, then resolved.
+> Element kinds were corrected at the propose-then-confirm gate: the heuristic returned
+> `unclassified` for `canvas-placeholder` and classified `legend` as a list-collection. Both were
+> reclassified to `static-content` by user confirmation, which dropped 6 false rows (empty/loading/
+> error/populated/partial/zero-one-many on a hand-authored legend) and resolved the unclassified
+> nudge. Final: **21 applicable considerations across 5 elements — 20 resolved (explicit), 1 backstop, 0 unresolved.**
+>
+> Empty- and error-state COPY lives in `## Copywriting Contract`; the rows below cover shape-rooted
+> STATE coverage and reference that section rather than restating it.
 
-Applicable state considerations resolved: 11 covered, 1 backstop, 0 unresolved.
-
-| Category | Element(s) | Status | Resolution / Reason |
-|----------|------------|--------|---------------------|
-| empty | panel-list, alert-feed | ✅ covered | Copy pattern established (`>> {SUBJECT} :: NO {ITEMS} IN RANGE`) for Phase 3/4 reuse; not rendered this phase because D-11's mock fixtures are always populated by design. |
-| loading | panel-list, alert-feed, crt-control | ✅ covered | No network/async exists in Phase 1 — mock fixtures render synchronously and the CRT toggle is a synchronous CSS-variable write. Loading states are Phase 3's scope (DATA-02). |
-| error | panel-list, alert-feed | ✅ covered | No network calls exist yet; error copy pattern established (`>> {SUBJECT} :: LINK FAILURE - RETRY`) for Phase 3 (DATA-04) to implement verbatim. |
-| error | crt-control | 🧪 backstop | `sessionStorage.setItem` can throw (Safari private-browsing quota). Executor must catch and fall back to in-memory intensity state for that session so the control never breaks the page. Verify with a forced-throw test — this is a real, easy-to-silently-skip edge case, not just a design note. |
-| populated | panel-list, alert-feed | ✅ covered | Typed mock fixtures (D-11) at realistic numeric density; panel body caps at 8 visible rows (224px) with internal scroll beyond that (see ASCII Border Contract). |
-| partial | panel-list, alert-feed | ✅ covered | Mock fixtures are fully-specified test data (D-11) — partial/incomplete real-payload handling is Phase 3/4/5 resilience scope (DATA-08), out of this phase's boundary. |
-| overflow | panel-list, alert-feed, panel title bar | ✅ covered | `ch`-stepped panel widths (32/48/64ch) + the deterministic title-truncation formula (`maxTitleChars = panelWidthCh - 8`) + the 8-row scroll cap. Full mechanism in ASCII Border Contract. |
-| overflow | canvas-placeholder, legend | ✅ covered | Fixed short authored copy in both cases; the legend is placed at the `48ch` tier specifically because its longest line (~31 chars) needs the room the `32ch` compact tier doesn't give it. |
-| zero-one-many | panel-list, alert-feed | ✅ covered | Copy uses numeric counts only (`NEO FEED :: 12`), never singular/plural word forms — the grammar problem is sidestepped by format choice, not handled case-by-case. |
-| long-text | crt-control | ✅ covered | Control labels are a fixed 3-value enum authored in this spec (`OFF`/`REDUCED`/`FULL`), not variable or user-sourced content — no length risk exists. |
-| long-text | alert-feed | ✅ covered | `Alert` has no box-drawing chrome to fight (D-15) — DONKI `messageBody` text wraps freely (`white-space: pre-wrap; word-break: break-word`), with no width-forced truncation risk the way a bordered Panel would have. |
-| long-text | canvas-placeholder | ✅ covered | Fixed authored string (`>> SCENE :: OFFLINE`), not dynamic/API content — no length risk exists. |
+| Category | Element | Status | Resolution |
+|----------|---------|--------|------------|
+| empty | panel-list | resolved (explicit) | Not rendered this phase — D-11's mock fixtures are always populated by design. The copy pattern `>> {SUBJECT} :: NO {ITEMS} IN RANGE` is locked in `## Copywriting Contract` for Phase 3/4 (DATA-05) to implement verbatim. |
+| loading | panel-list | resolved (explicit) | No async exists in Phase 1 — mock fixtures render synchronously from module scope. Loading is DATA-02, Phase 3. |
+| error | panel-list | resolved (explicit) | No network calls exist yet. Pattern `>> {SUBJECT} :: LINK FAILURE - RETRY` locked in `## Copywriting Contract` for DATA-04, Phase 3. |
+| populated | panel-list | resolved (explicit) | Typed mock fixtures at realistic numeric density (D-11). Body caps at 8 visible rows (8 × 28px = 224px), then internal `overflow-y: auto`; the ASCII border rows stay static so the box never visually opens up. |
+| partial | panel-list | resolved (explicit) | Fixtures are fully-specified test data. Handling of incomplete real payloads is DATA-08 (Phase 3/4/5) — out of this phase's boundary. |
+| overflow | panel-list | resolved (explicit) | `ch`-stepped widths (32/48/64) + title truncation formula `maxTitleChars = panelWidthCh - 8` + 8-row scroll cap. Full mechanism in `## ASCII Border Contract`. |
+| zero-one-many | panel-list | resolved (explicit) | Counts render numerically only (`NEO FEED :: 12`), never singular/plural word forms — the grammar problem is designed out, not handled case-by-case. |
+| empty | alert-feed | resolved (explicit) | With no bulletins, `Alert` renders nothing and its containing `Panel` shows the empty pattern above. `Alert` itself never renders an empty shell. |
+| loading | alert-feed | resolved (explicit) | Same as panel-list — no async in Phase 1. DATA-02, Phase 3. |
+| error | alert-feed | resolved (explicit) | Same as panel-list — DATA-04, Phase 3. |
+| populated | alert-feed | resolved (explicit) | Mock bulletins authored in the fixed CRT-05 grammar `>> {SUBJECT} {STATE} - {QUALIFIER}: {VALUE}`. |
+| partial | alert-feed | resolved (explicit) | **New decision, not inherited.** DONKI records routinely lack a qualifier (a CME with no `cmeAnalyses` entry has no intensity). The grammar degrades by dropping the whole ` - {QUALIFIER}: {VALUE}` clause, never by emitting a placeholder: `>> CME DETECTED`, never `>> CME DETECTED - INTENSITY: UNKNOWN`. Phase 5 inherits this rule. |
+| overflow | alert-feed | resolved (explicit) | `Alert` carries no box-drawing chrome (D-15), so text wraps freely via `white-space: pre-wrap; word-break: break-word`. No width-forced truncation, unlike a bordered `Panel`. |
+| zero-one-many | alert-feed | resolved (explicit) | Numeric counts only, same rule as panel-list. |
+| loading | crt-control | resolved (explicit) | Toggling writes a CSS custom property synchronously. There is no async path and therefore no loading state. |
+| error | crt-control | **backstop** | `sessionStorage.setItem` throws in Safari private browsing (quota 0) and when site data is blocked. The control MUST catch and fall back to in-memory intensity state for the session rather than letting the exception break the page. Verified by a forced-throw test — this is the one row in this table that can silently ship broken. |
+| long-text | crt-control | resolved (explicit) | Labels are a fixed three-value enum authored in this spec (`OFF` / `REDUCED` / `FULL`). No variable or user-sourced content, so no length risk exists. |
+| overflow | canvas-placeholder | resolved (explicit) | Fixed short authored string centered in the largest box on the page. Overflow is structurally impossible at any supported width. |
+| long-text | canvas-placeholder | resolved (explicit) | `>> SCENE :: OFFLINE` is authored, not dynamic. Phase 2 replaces the block entirely rather than extending the string. |
+| overflow | legend | resolved (explicit) | Rendered at the `48ch` tier rather than `32ch` specifically because its longest line (`■ MAGENTA :: REQUIRES ATTENTION`, ~31 chars) leaves no margin at the compact tier. |
+| long-text | legend | resolved (explicit) | Entries are hand-authored in source and never fetched. Adding an entry is a code change that re-checks against the `48ch` tier at authoring time. |
 
 ---
 
