@@ -30,13 +30,14 @@ Decimal phases appear between their surrounding integers in numeric order.
 ### Phase 1: Terminal Design System & App Shell
 **Goal**: The dashboard's visual language exists as a reusable terminal design system, and the single-screen shell it lives in renders on mobile and desktop
 **Depends on**: Nothing (first phase)
-**Requirements**: CRT-02, CRT-03, CRT-04, CRT-05, RESP-01, RESP-04
+**Requirements**: CRT-02, CRT-03, CRT-04, CRT-05, CRT-10, RESP-01, RESP-04
 **Success Criteria** (what must be TRUE):
   1. User loads one scrolling page with no separate routes, and it lays out correctly at both phone width and desktop width
   2. User sees the phosphor-green + magenta/violet on deep black palette and the VT323 pixel monospace face applied consistently, loaded through `next/font` with no flash of fallback font
   3. User sees alert content rendered in terminal format (e.g. `>> CME DETECTED - INTENSITY: MODERATE`) from a reusable panel component
   4. User sees a CSS-level CRT treatment on 2D panels that is visibly present but leaves data text fully legible
   5. User can read a legend explaining what each palette color means
+  6. User can reduce or turn off the CRT effect from a visible in-theme control, and the choice holds for the session
 **Plans**: TBD
 **UI hint**: yes
 

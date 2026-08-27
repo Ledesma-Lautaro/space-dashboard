@@ -57,6 +57,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **CRT-07**: `prefers-reduced-motion` disables flicker and scene animation
 - [ ] **CRT-08**: `devicePixelRatio` is capped and postprocessing passes are reduced on low-power or narrow viewports so mobile framerate stays usable
 - [ ] **CRT-09**: Text contrast meets WCAG AA measured over the composited CRT output, not over flat color swatches
+- [ ] **CRT-10**: User can reduce or turn off the CRT effect from a visible in-theme control, and the choice persists for the session
 
 ### Capa de Datos y Resiliencia
 
@@ -158,6 +159,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CRT-07 | Phase 11 | Pending |
 | CRT-08 | Phase 11 | Pending |
 | CRT-09 | Phase 11 | Pending |
+| CRT-10 | Phase 1 | Pending |
 | DATA-01 | Phase 3 | Pending |
 | DATA-02 | Phase 3 | Pending |
 | DATA-03 | Phase 3 | Pending |
@@ -178,7 +180,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Phase | Requirements | Count |
 |-------|--------------|-------|
-| 1. Terminal Design System & App Shell | CRT-02, CRT-03, CRT-04, CRT-05, RESP-01, RESP-04 | 6 |
+| 1. Terminal Design System & App Shell | CRT-02, CRT-03, CRT-04, CRT-05, CRT-10, RESP-01, RESP-04 | 7 |
 | 2. React<->Three.js Render Boundary | SCENE-03, SCENE-04, SCENE-09, RESP-02 | 4 |
 | 3. NASA Data Layer & Resilience | DATA-01..DATA-08 | 8 |
 | 4. Asteroid Classifier Panel | NEO-01..NEO-07 | 7 |
@@ -192,8 +194,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | 12. Real-Device Hardening, Deploy & Case Study | RESP-03, SHIP-01, SHIP-02, SHIP-03 | 4 |
 
 **Coverage:**
-- v1 requirements: 51 total
-- Mapped to phases: 51
+- v1 requirements: 52 total
+- Mapped to phases: 52
 - Unmapped: 0
 
 ---
