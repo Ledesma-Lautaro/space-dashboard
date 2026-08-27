@@ -22,7 +22,7 @@ created: 2026-08-27
 | Tool | none |
 | Preset | not applicable |
 | Component library | none — hand-built `Panel`/`Alert` components (D-12, D-15) |
-| Icon library | none — box-drawing glyphs already in VT323 (`┌─┐│└┘`) serve as the entire iconographic vocabulary. If a true icon is ever needed in a later phase, use inline SVG sized to `1em` square rather than an icon font — an icon font would fight the self-hosted single-face loading model this phase establishes (D-04). |
+| Icon library | none — plain ASCII `+`, `-`, `|` (VT323-covered, identical advance) serve as the entire iconographic vocabulary. **Unicode box-drawing (`┌─┐│└┘`, U+2500–257F) and `■` (U+25A0) are NOT in any VT323 subset — verified against the served Google Fonts CSS — and must never be used.** If a true icon is ever needed in a later phase, use inline SVG sized to `1em` square rather than an icon font — an icon font would fight the self-hosted single-face loading model this phase establishes (D-04). |
 | Font | VT323, single weight (400), loaded via `next/font/google` in `app/layout.tsx`, exposed as a CSS variable (`--font-terminal`) applied at the root layout |
 
 **shadcn gate — explicitly skipped, not asked.** `components.json` is absent (greenfield repo, verified via `git ls-files`) and the repo has no `package.json` yet. Normally this triggers the init prompt, but D-01 locks **CSS Modules + CSS custom properties, explicitly not Tailwind** — shadcn's registry model is built on Tailwind + Radix and is structurally incompatible with that locked decision. Asking to init shadcn here would contradict a decision the user already made in `/gsd-discuss-phase`, so the gate is recorded as skipped-by-locked-decision rather than presented as a live question. Registry safety gate: not applicable for this phase.
@@ -45,7 +45,7 @@ Declared values (multiples of 4, per the standard 8-point scale):
 | `--space-2xl` | 48px | Gap between the canvas hero and the first panel on scroll |
 | `--space-3xl` | 64px | Page-level top/bottom breathing room |
 
-**Exception — Panel horizontal interior padding is `ch`-based, not px.** Because Panel chrome (D-12) uses literal box-drawing characters whose alignment depends on the monospace character grid, horizontal padding inside a Panel is declared as `1ch` (compact) or `2ch` (default) rather than a px token, so text content never drifts out of alignment with the `│` side borders. Vertical padding inside a Panel still uses the px scale above (`--space-md` top/bottom). This is the only exception to the 8-point scale in this phase — see **ASCII Border Contract** below for the full mechanism.
+**Exception — Panel horizontal interior padding is `ch`-based, not px.** Because Panel chrome (D-12) uses literal ASCII characters whose alignment depends on the monospace character grid, horizontal padding inside a Panel is declared as `1ch` (compact) or `2ch` (default) rather than a px token, so text content never drifts out of alignment with the CSS side borders or the `+`/`-` rows above and below. Vertical padding inside a Panel still uses the px scale above (`--space-md` top/bottom). This is the only exception to the 8-point scale in this phase — see **ASCII Border Contract** below for the full mechanism.
 
 ---
 
@@ -108,11 +108,19 @@ Contrast ratios below are computed against `--color-bg` (`#060907`, relative lum
 
 ## ASCII Border Contract
 
+### ⚠ Verified corrections applied after checker sign-off
+
+Two values originally written in this section were measured and found wrong during Phase 1 research (`01-RESEARCH.md`). Both corrections are user-approved and supersede the original text wherever it still appears:
+
+1. **VT323 has no box-drawing glyphs.** The Unicode Box Drawing block (`U+2500–257F`) is absent from every VT323 subset Google Fonts serves — confirmed independently against the served `@font-face` `unicode-range` declarations, which cover only `U+0000-00FF`, `U+2000-206F`, and a handful of isolated symbols. `■` (`U+25A0`, Geometric Shapes) is likewise absent. Any such character falls back to a different font at a different advance width — precisely the misalignment this contract exists to prevent. **All border and swatch glyphs are plain ASCII (`+`, `-`, `|`, `#`), which VT323 covers at an identical advance.** This amends decision D-12 in `01-CONTEXT.md`.
+2. **VT323's advance is `0.4em`, not `0.6em`.** Every `ch`→px figure originally in this section was ~50% too large. The `32/48/64ch` tier scale is superseded; the executor measures the installed font and sets tiers so the compact tier fills a real phone width.
+
+
 This is the phase's highest-risk area (flagged explicitly in `01-CONTEXT.md`'s `<specifics>` block) — given a concrete, deterministic mechanism rather than "handle responsively."
 
 **Hybrid construction — not a full ASCII box every row:**
-- **Top border row** is literal text content: `┌─ {TITLE} ─{fill}┐`, where `{fill}` is a computed run of `─` characters that pads the row to the panel's declared width in `ch`.
-- **Bottom border row** is literal text content: `└{fill}┘` — a full-width dash run, no title.
+- **Top border row** is literal text content: `+-- {TITLE} --{fill}+`, where `{fill}` is a computed run of `-` characters that pads the row to the panel's declared width in `ch`. **ASCII only — see the glyph-coverage correction below.**
+- **Bottom border row** is literal text content: `+{fill}+` — a full-width `-` run, no title.
 - **Side borders are plain CSS**, not characters: `border-left` / `border-right: 1px solid var(--color-dim)` on the panel body between the top and bottom rows. Verticals always align at any pixel width — no character math needed for the sides, which removes most of the fragility.
 
 **Fixed `ch`-step width scale — panels are not fluid-arbitrary:**
@@ -123,7 +131,7 @@ This is the phase's highest-risk area (flagged explicitly in `01-CONTEXT.md`'s `
 | Default | `48ch` | Primary content panels (NEO FEED, SPACE WEATHER) on tablet/desktop |
 | Wide | `64ch` | Reserved for a panel that needs more columns (not used by any Phase 1 panel, declared for Phase 4/5 to opt into if a table needs it) |
 
-Each panel snaps to the **nearest declared tier**, never a fluid `%` or arbitrary px width — this is what keeps the `{fill}` dash computation an integer every time, with no leftover fractional character. Approximate px equivalence at VT323's metrics (verify empirically once built — VT323's advance width is roughly `0.6em`, so at the 20px body size `1ch ≈ 12px`): `32ch ≈ 384px`, `48ch ≈ 576px`, `64ch ≈ 768px`.
+Each panel snaps to the **nearest declared tier**, never a fluid `%` or arbitrary px width — this is what keeps the `{fill}` dash computation an integer every time, with no leftover fractional character. **CORRECTED (see `01-RESEARCH.md`, verified by direct font-metric inspection):** VT323's advance is `0.4em`, NOT the `0.6em` originally estimated here — so at the 20px body size `1ch ≈ 8px`, which makes the original tier scale far narrower than intended (`32ch ≈ 256px`, well under a 360–430px phone viewport). **The 32/48/64ch tier scale is therefore SUPERSEDED.** The executor must measure the installed font's real advance in the browser and set the three tiers so the compact tier fills a real phone width — expect something near `44/64/88ch`, but the measured value governs, not this estimate.
 
 **Degrade threshold — below 32ch, drop the ASCII rows entirely:** at container widths under `32ch` (roughly sub-280px after safe-area padding — narrow phone widths), the top/bottom text rows are replaced with plain CSS `border-top` / `border-bottom: 1px solid var(--color-dim)`, and the title renders as plain text above the border with no box-drawing glyphs at all. This is the explicit degrade point the risk note asked for.
 
@@ -131,7 +139,7 @@ Each panel snaps to the **nearest declared tier**, never a fluid `%` or arbitrar
 ```
 maxTitleChars = panelWidthCh - 8
 ```
-The `8` accounts for the fixed chrome (`┌─ ` = 3 chars, ` ─` = 2 chars before `┐`) plus a reserved minimum of 3 trailing dash characters so the border never reads as a title that ate the whole row. A title longer than `maxTitleChars` truncates with a single `…` as its last character. Example at the `48ch` tier: `maxTitleChars = 40` — every Phase 1 panel title (`NEO FEED`, `SPACE WEATHER`, `SOLAR SYSTEM`, `SYSTEM LEGEND`) is well under this, so truncation is not exercised in this phase but the formula is load-bearing for Phase 4/5 titles that may include a live count (see Copywriting Contract).
+The `8` accounts for the fixed chrome (`+-- ` = 4 chars, ` --` = 3 chars before `+`) plus a reserved minimum of 3 trailing dash characters so the border never reads as a title that ate the whole row. A title longer than `maxTitleChars` truncates with a single `…` as its last character. Example at the `48ch` tier: `maxTitleChars = 40` — every Phase 1 panel title (`NEO FEED`, `SPACE WEATHER`, `SOLAR SYSTEM`, `SYSTEM LEGEND`) is well under this, so truncation is not exercised in this phase but the formula is load-bearing for Phase 4/5 titles that may include a live count (see Copywriting Contract).
 
 **Panel body overflow (list content, not the border):** panel body height caps at **8 visible rows** (`8 × 28px line-height = 224px`) before switching to internal `overflow-y: auto` scroll. The border does not resize with scroll — the fixed-height scrollable body sits between the static top and bottom border rows, so the box never visually "opens up" as more mock data is added.
 
@@ -232,8 +240,8 @@ Radius by brightness step: dim `2px`, normal `3px`, bright `5px`. Glow *adds* lu
 
 **Legend entries (RESP-04):**
 ```
-■ GREEN   :: NOMINAL / ROUTINE
-■ MAGENTA :: REQUIRES ATTENTION
+# GREEN   :: NOMINAL / ROUTINE
+# MAGENTA :: REQUIRES ATTENTION
   (brightness = emphasis, not a different meaning)
 ```
 Rendered inside a `LEGEND` panel at the `48ch` tier (not the `32ch` compact tier — the magenta line is ~31 characters and needs the breathing room; see ASCII Border Contract overflow row below).
@@ -273,7 +281,7 @@ Rendered inside a `LEGEND` panel at the `48ch` tier (not the `32ch` compact tier
 | long-text | crt-control | resolved (explicit) | Labels are a fixed three-value enum authored in this spec (`OFF` / `REDUCED` / `FULL`). No variable or user-sourced content, so no length risk exists. |
 | overflow | canvas-placeholder | resolved (explicit) | Fixed short authored string centered in the largest box on the page. Overflow is structurally impossible at any supported width. |
 | long-text | canvas-placeholder | resolved (explicit) | `>> SCENE :: OFFLINE` is authored, not dynamic. Phase 2 replaces the block entirely rather than extending the string. |
-| overflow | legend | resolved (explicit) | Rendered at the `48ch` tier rather than `32ch` specifically because its longest line (`■ MAGENTA :: REQUIRES ATTENTION`, ~31 chars) leaves no margin at the compact tier. |
+| overflow | legend | resolved (explicit) | Rendered at the `48ch` tier rather than `32ch` specifically because its longest line (`# MAGENTA :: REQUIRES ATTENTION`, ~31 chars) leaves no margin at the compact tier. |
 | long-text | legend | resolved (explicit) | Entries are hand-authored in source and never fetched. Adding an entry is a code change that re-checks against the `48ch` tier at authoring time. |
 
 ---
