@@ -3,16 +3,16 @@ gsd_state_version: 1.0
 current_phase: 1
 current_phase_name: Terminal Design System & App Shell
 status: executing
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-08-27T23:50:53.373Z"
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-08-28T00:14:54.362Z"
 last_activity: 2026-08-26
 last_activity_desc: Roadmap created, 51/51 v1 requirements mapped across 12 phases
-state_head: 5583f33edf1f5a9a6d946b92788fe2471e88d5b1
+state_head: 7737a0ca990c4dd9e7c9900b669aa05d6acb12b8
 progress:
   total_phases: 12
   completed_phases: 0
   total_plans: 7
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-08-26)
 ## Current Position
 
 Phase: 1 of 12 (Terminal Design System & App Shell)
-Plan: 1 of 7 in current phase
+Plan: 2 of 7 in current phase
 Status: Ready to execute
 Last activity: 2026-08-26 — Roadmap created, 51/51 v1 requirements mapped across 12 phases
 
@@ -59,6 +59,7 @@ Progress: [░░░░░░░░░░] 0%
 | Plan | Duration | Tasks | Files |
 |------|----------|-------|-------|
 | Phase 01 P01 | 12min | 2 tasks | 20 files |
+| Phase 01 P02 | 25min | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -74,6 +75,8 @@ Recent decisions affecting current work:
 - [Project]: Three.js vanilla instead of React Three Fiber — R3F abstracts the exact API this project exists to learn
 - [Phase 1]: Scaffolded into 'scaffold-tmp' (no leading dot) instead of the literal '.scaffold-tmp' since npm rejects a period-prefixed project name; package.json name corrected to space-dashboard post-relocation
 - [Phase 1]: Kept scaffolder-generated root AGENTS.md/CLAUDE.md (Next.js's own doc-reading reminder) rather than deleting them
+- [Phase 1]: Panel tiers set to 44/64/88ch (0.4em-advance measured), superseding the UI-SPEC's unapproved 32/48/64ch estimate
+- [Phase 1]: ASCII border rows and panel titles render at Body size (20px), not Heading size, so 1ch stays uniform across the whole panel
 
 ### Pending Todos
 
@@ -95,6 +98,6 @@ Items acknowledged and deferred at milestone close, most recent first:
 
 ## Session Continuity
 
-Last session: 2026-08-27T23:50:53.320Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-08-28T00:14:54.319Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
