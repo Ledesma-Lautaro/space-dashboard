@@ -1,13 +1,13 @@
 import { NeoFeedPanel } from "@/components/panels/NeoFeedPanel";
 import { SpaceWeatherPanel } from "@/components/panels/SpaceWeatherPanel";
-import { CrtControl } from "@/components/ui/CrtControl";
+import { Legend } from "@/components/ui/Legend";
 
 import styles from "./DashboardShell.module.css";
 
 /**
  * Single-screen layout composition (RESP-01, D-06/D-07/D-09) and the CRT
- * root wrapper. Not a client component itself — CrtControl owns the one
- * client boundary this tree needs.
+ * root wrapper. Not a client component itself — the CRT control now lives
+ * inside Legend, which owns the one client boundary this tree needs.
  */
 export function DashboardShell() {
   return (
@@ -27,7 +27,7 @@ export function DashboardShell() {
       </section>
 
       <section className={styles.legend}>
-        <CrtControl />
+        <Legend />
       </section>
 
       <div className="crt-overlay" aria-hidden="true" />
