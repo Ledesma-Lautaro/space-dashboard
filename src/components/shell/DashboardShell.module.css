@@ -31,11 +31,20 @@
   line-height: var(--leading-label);
 }
 
+/*
+ * Named inline-size query container (Task 2, sub-compact degrade). Panel's
+ * @container rule keys off this "panels" name specifically so an unrelated
+ * ancestor container can never capture the query by accident, and so this
+ * stays correct when Phase 10 nests a Panel inside a narrower HUD column
+ * that declares its own "panels"-named container.
+ */
 .panels {
   width: 100%;
   display: flex;
   justify-content: center;
   padding: var(--space-2xl) var(--space-lg) var(--space-lg);
+  container-type: inline-size;
+  container-name: panels;
 }
 
 .dataLine {
