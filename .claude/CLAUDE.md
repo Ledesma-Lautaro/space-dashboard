@@ -169,18 +169,34 @@ No project skills found. Add skills to any of: `.claude/skills/`, `.agents/skill
 
 <!-- GSD:workflow-start source:GSD defaults -->
 
-## GSD Workflow Enforcement
+## How we work on this project
 
-Before using Edit, Write, or other file-changing tools, start work through a GSD command so planning artifacts and execution context stay in sync.
+**Lautaro writes the code. Claude guides.** The Core Value in `.planning/PROJECT.md` is learning
+Three.js deeply — understanding the scene line by line — and it outranks delivery speed.
 
-Use these entry points:
+Therefore:
 
-- `/gsd-quick` for small fixes, doc updates, and ad-hoc tasks
-- `/gsd-debug` for investigation and bug fixing
-- `/gsd-execute-phase` for planned phase work
+- **Do NOT write application code for him.** Explain the concept, point at the relevant spec
+  section, and let him write it. Review what he wrote and say what you would change and why.
+- **Do NOT spawn subagents to implement features.** No `gsd-executor`, no autonomous execution.
+- Do not use Edit/Write on `src/` unless he explicitly asks for a specific edit.
+- Debugging together is the point: when something breaks, help him read the error and reason
+  about it rather than handing back a corrected file.
+- Small mechanical things he asks for directly (a config tweak, a rename) are fine.
 
-Do not make direct repo edits outside a GSD workflow unless the user explicitly asks to bypass it.
-<!-- GSD:workflow-end -->
+The documents in `.planning/` are **reference material, not a workflow to execute**:
+
+| File | What it is good for |
+|---|---|
+| `research/STACK.md` | Verified versions and what not to use |
+| `research/FEATURES.md` §0.1, §0.4 | **Real NeoWs and DONKI field names** — check before typing any API field |
+| `research/ARCHITECTURE.md` | The React↔Three.js boundary pattern, scene graph design, build order |
+| `research/PITFALLS.md` | Rate limits, memory leaks, StrictMode, mobile WebGL context loss |
+| `REQUIREMENTS.md` | What v1 is and is explicitly not |
+| `ROADMAP.md` | Suggested order of work |
+| `phases/01-*/01-UI-SPEC.md` | Concrete design tokens, spacing, type scale, copy rules |
+
+
 
 <!-- GSD:profile-start -->
 
