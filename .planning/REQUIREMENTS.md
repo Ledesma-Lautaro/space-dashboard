@@ -49,15 +49,15 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Estética CRT
 
 - [ ] **CRT-01**: 3D canvas renders through `EffectComposer` with hand-written GLSL passes for scanlines, vignette, and per-channel chromatic aberration
-- [ ] **CRT-02**: 2D panels carry the CRT look via CSS at reduced intensity so data text stays legible
-- [ ] **CRT-03**: Palette is phosphor green + magenta/violet on deep black, applied consistently across 2D panels and the 3D scene
-- [ ] **CRT-04**: Typography is a pixel monospace face (VT323 or equivalent) loaded through `next/font`
+- [x] **CRT-02**: 2D panels carry the CRT look via CSS at reduced intensity so data text stays legible
+- [x] **CRT-03**: Palette is phosphor green + magenta/violet on deep black, applied consistently across 2D panels and the 3D scene
+- [x] **CRT-04**: Typography is a pixel monospace face (VT323 or equivalent) loaded through `next/font`
 - [ ] **CRT-05**: Alert panels render in terminal format (e.g. `>> CME DETECTED - INTENSITY: MODERATE`)
 - [ ] **CRT-06**: CRT flicker never exceeds 3 flashes per second at ≥10% luminance delta, verified by frame-by-frame analysis (WCAG 2.3.1) with scanlines and data-arrival animation running together
 - [ ] **CRT-07**: `prefers-reduced-motion` disables flicker and scene animation
 - [ ] **CRT-08**: `devicePixelRatio` is capped and postprocessing passes are reduced on low-power or narrow viewports so mobile framerate stays usable
 - [ ] **CRT-09**: Text contrast meets WCAG AA measured over the composited CRT output, not over flat color swatches
-- [ ] **CRT-10**: User can reduce or turn off the CRT effect from a visible in-theme control, and the choice persists for the session
+- [x] **CRT-10**: User can reduce or turn off the CRT effect from a visible in-theme control, and the choice persists for the session
 
 ### Capa de Datos y Resiliencia
 
@@ -151,15 +151,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PICK-04 | Phase 9 | Pending |
 | PICK-05 | Phase 10 | Pending |
 | CRT-01 | Phase 11 | Pending |
-| CRT-02 | Phase 1 | Pending |
-| CRT-03 | Phase 1 | Pending |
-| CRT-04 | Phase 1 | Pending |
+| CRT-02 | Phase 1 | Complete |
+| CRT-03 | Phase 1 | Complete |
+| CRT-04 | Phase 1 | Complete |
 | CRT-05 | Phase 1 | Pending |
 | CRT-06 | Phase 11 | Pending |
 | CRT-07 | Phase 11 | Pending |
 | CRT-08 | Phase 11 | Pending |
 | CRT-09 | Phase 11 | Pending |
-| CRT-10 | Phase 1 | Pending |
+| CRT-10 | Phase 1 | Complete |
 | DATA-01 | Phase 3 | Pending |
 | DATA-02 | Phase 3 | Pending |
 | DATA-03 | Phase 3 | Pending |

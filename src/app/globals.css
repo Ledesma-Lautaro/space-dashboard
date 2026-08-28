@@ -1,1 +1,141 @@
-/* Design-token entry point — populated in plan 01-02 (CSS custom properties, base resets, CRT overlay). */
+/*
+ * Design-token entry point (D-01, D-02, D-03).
+ *
+ * Single token layer only — no primitives-plus-semantic two-tier indirection.
+ * Every name below describes a role ("nominal", "alert", "dim") rather than a
+ * value, so Phase 11 can retune the palette against composited CRT output in
+ * one place with no renaming anywhere else.
+ */
+
+:root {
+  /* Backgrounds */
+  --color-bg: #060907;
+  --color-surface: #0d130f;
+
+  /* Nominal (green) — brightness steps carry emphasis, not hue (D-14). Green
+     is the base state of everything (D-13). */
+  --color-nominal-dim: #2fa352;
+  --color-nominal: #4cdb6e;
+  --color-nominal-bright: #8cffa8;
+
+  /* Alert (magenta/violet) — reserved for the exceptional only (D-13): Alert
+     component text/border, the legend's magenta swatch, and future
+     "requires attention" indicators. Never default UI chrome or default text. */
+  /* Decorative-only — measures 2.46:1 against --color-bg, which fails AA even
+     for large text. Never render this token as text. Borders / inactive
+     swatches only. */
+  --color-alert-dim: #7a2e8a;
+  --color-alert: #c64ae6;
+  --color-alert-bright: #f2a0e8;
+
+  /* Structural chrome — box/border characters, dividers, inactive/placeholder
+     text. Declared as its own token (same value as --color-nominal-dim today)
+     so chrome can be tuned separately from de-emphasised body text later. */
+  --color-dim: #2fa352;
+
+  /* Spacing — 8-point scale (D-01/UI-SPEC Spacing Scale). */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* Typography — every line-height is an exact multiple of the 4px scanline
+     pitch so an integer number of scanline bands falls inside every line. */
+  --type-body: 20px;
+  --type-label: 16px;
+  --type-heading: 24px;
+  --type-display: 32px;
+  --leading-body: 28px;
+  --leading-label: 24px;
+  --leading-heading: 28px;
+  --leading-display: 36px;
+
+  /* CRT overlay (D-16, D-17). Fixed pitch/shape at every intensity level —
+     only opacity scales with --crt-intensity, driven by CrtControl. */
+  --crt-intensity: 1;
+  --crt-scanline-pitch: 4px;
+  --crt-scanline-opacity: calc(0.25 * var(--crt-intensity));
+  --crt-vignette-opacity: calc(0.45 * var(--crt-intensity));
+
+  /* Phosphor glow radii — applied per text element via text-shadow, not part
+     of the fixed overlay, so glow scales with each element's own brightness
+     step rather than a single global value. */
+  --glow-radius-dim: 2px;
+  --glow-radius-normal: 3px;
+  --glow-radius-bright: 5px;
+
+  /* Character-grid tokens. VT323's real advance is 0.4em, not the ~0.6em the
+     UI-SPEC originally estimated — verified by direct font-binary inspection
+     (fontkit cmap + OS/2.xAvgCharWidth, both agree exactly) in 01-RESEARCH.md.
+     The original 32/48/64ch tier scale assumed 0.6em and is superseded; the
+     tiers below were sized against the measured 0.4em advance so the compact
+     tier still fills a real phone width (44ch * 8px ≈ 352px). */
+  --ch-advance-em: 0.4;
+  --panel-ch-compact: 44;
+  --panel-ch-default: 64;
+  --panel-ch-wide: 88;
+  --panel-w-compact: 44ch;
+  --panel-w-default: 64ch;
+  --panel-w-wide: 88ch;
+}
+
+/* Shape policy: no rounded corners anywhere — rounding fights the
+   rectangular ASCII chrome sitting next to it everywhere in this system. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  border-radius: 0;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-nominal);
+  font-family: var(--font-terminal), monospace;
+  font-size: var(--type-body);
+  line-height: var(--leading-body);
+  min-height: 100svh;
+}
+
+/*
+ * Single fixed CRT overlay (D-17). One rule, one element, above all content.
+ * Scanlines and vignette are static gradients — nothing here animates,
+ * pulses, oscillates or scrolls (D-18). The pitch and gradient stops never
+ * change with intensity; only the opacities do.
+ */
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, var(--crt-scanline-opacity)) 0px,
+      rgba(0, 0, 0, var(--crt-scanline-opacity)) 1px,
+      transparent 1px,
+      transparent var(--crt-scanline-pitch)
+    ),
+    radial-gradient(
+      ellipse at center,
+      transparent 55%,
+      rgba(0, 0, 0, var(--crt-vignette-opacity)) 100%
+    );
+}
+
+/* The only motion permitted anywhere in the CRT layer: a 150ms opacity
+   transition on level change, and only when the user has not asked for
+   reduced motion (D-19) — under reduced motion the level change is instant. */
+@media (prefers-reduced-motion: no-preference) {
+  .crt-overlay {
+    transition: opacity 150ms ease;
+  }
+}

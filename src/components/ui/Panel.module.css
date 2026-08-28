@@ -1,0 +1,27 @@
+.panel {
+  background: var(--color-surface);
+  color: var(--color-nominal);
+  font-family: var(--font-terminal), monospace;
+  font-size: var(--type-body);
+  line-height: var(--leading-body);
+  border-left: 1px solid var(--color-dim);
+  border-right: 1px solid var(--color-dim);
+  margin: 0 auto;
+}
+
+.chromeRow {
+  margin: 0;
+  padding: 0;
+  color: var(--color-dim);
+  font: inherit;
+  white-space: pre;
+}
+
+.title {
+  color: var(--color-nominal-bright);
+  text-shadow: 0 0 var(--glow-radius-normal) currentColor;
+}
+
+.body {
+  padding: var(--space-md) 2ch;
+}
