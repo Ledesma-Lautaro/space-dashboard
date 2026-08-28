@@ -22,6 +22,72 @@
   text-shadow: 0 0 var(--glow-radius-normal) currentColor;
 }
 
+/* Plain-text title for the sub-compact degrade path. Hidden by default —
+   the ASCII chrome row above carries the title at every tier that can hold
+   a full character grid. Only the @container rule below reveals this. */
+.plainTitle {
+  display: none;
+  margin: 0;
+  padding: var(--space-xs) 2ch 0;
+  color: var(--color-nominal-bright);
+  font-size: var(--type-body);
+  line-height: var(--leading-body);
+  text-shadow: 0 0 var(--glow-radius-normal) currentColor;
+}
+
+/*
+ * Body caps at exactly PANEL_CHROME row-count (8) visible rows of content,
+ * then switches to internal vertical scroll — the two border rows never
+ * move as content grows. Height accounts for the fixed padding so the
+ * *content* area, not the padded box, is what measures 8 rows tall.
+ * scrollbar-gutter: stable keeps the 2ch horizontal padding on the
+ * character grid even once a scrollbar claims width.
+ */
 .body {
+  height: calc(
+    (var(--panel-body-rows) * var(--leading-body)) + (2 * var(--space-md))
+  );
   padding: var(--space-md) 2ch;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-dim) transparent;
+}
+
+.body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.body::-webkit-scrollbar-thumb {
+  background-color: var(--color-dim);
+}
+
+/*
+ * Sub-compact degrade (UI-SPEC "Degrade threshold"): below the compact
+ * tier's resolved width, the ASCII rows can no longer hold a whole
+ * character grid, so they are replaced entirely by plain CSS top/bottom
+ * borders and a plain-text title — a deliberate style, not a misaligned
+ * box. 352px is the compact tier's 44ch at the measured 8px/char VT323
+ * advance recorded in globals.css. Keyed to the "panels" named inline-size
+ * container declared on the panels region (DashboardShell.module.css) so
+ * this responds to the space actually given, not the viewport.
+ */
+@container panels (max-width: 352px) {
+  .chromeRow {
+    display: none;
+  }
+
+  .plainTitle {
+    display: block;
+  }
+
+  .body {
+    border-top: 1px solid var(--color-dim);
+    border-bottom: 1px solid var(--color-dim);
+  }
 }

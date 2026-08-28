@@ -80,6 +80,10 @@
   --panel-w-compact: 44ch;
   --panel-w-default: 64ch;
   --panel-w-wide: 88ch;
+
+  /* Panel body row cap (see Panel.module.css .body) — 8 visible rows of
+     --leading-body before the body switches to internal vertical scroll. */
+  --panel-body-rows: 8;
 }
 
 /* Shape policy: no rounded corners anywhere — rounding fights the
