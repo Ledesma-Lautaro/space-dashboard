@@ -1,0 +1,15 @@
+.control {
+  font-family: var(--font-terminal), monospace;
+  font-size: var(--type-body);
+  line-height: var(--leading-body);
+  background: transparent;
+  color: var(--color-nominal);
+  border: 1px solid var(--color-dim);
+  padding: var(--space-xs) var(--space-sm);
+  cursor: pointer;
+}
+
+.control:focus-visible {
+  outline: 2px solid var(--color-nominal-bright);
+  outline-offset: 2px;
+}
