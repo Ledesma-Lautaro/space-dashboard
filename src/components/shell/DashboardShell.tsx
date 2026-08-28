@@ -1,3 +1,4 @@
+import { ScenePlaceholder } from "@/components/canvas/ScenePlaceholder";
 import { NeoFeedPanel } from "@/components/panels/NeoFeedPanel";
 import { SpaceWeatherPanel } from "@/components/panels/SpaceWeatherPanel";
 import { Legend } from "@/components/ui/Legend";
@@ -14,11 +15,9 @@ export function DashboardShell() {
     <div className={styles.shell}>
       <section
         className={styles.canvas}
-        data-render-target="solar-system-canvas"
         aria-label="Solar system scene placeholder"
       >
-        <p className={styles.canvasHeading}>{">> SCENE :: OFFLINE"}</p>
-        <p className={styles.canvasSubheading}>{"[ RENDER TARGET RESERVED ]"}</p>
+        <ScenePlaceholder />
       </section>
 
       <section className={styles.panels}>
