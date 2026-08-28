@@ -26,28 +26,31 @@
 }
 
 /*
- * Named inline-size query container (Task 2, sub-compact degrade). Panel's
- * @container rule keys off this "panels" name specifically so an unrelated
- * ancestor container can never capture the query by accident, and so this
- * stays correct when Phase 10 nests a Panel inside a narrower HUD column
- * that declares its own "panels"-named container.
+ * Named inline-size query container (Task 2, sub-compact degrade; defect
+ * fix — see 01-FIX-panel-overflow.md). Panel's @container rules key off
+ * this "panels" name specifically so an unrelated ancestor container can
+ * never capture the query by accident, and so this stays correct when
+ * Phase 10 nests a Panel inside a narrower HUD column that declares its own
+ * "panels"-named container.
  *
  * Content column: capped at the wide tier's width so the layout does not
  * stretch across an ultrawide display, centred with margin: auto, with
  * horizontal gutters from the large spacing token plus safe-area insets so
  * content clears a notch or a rounded corner on a phone.
  *
- * Panel tier snapping: below the 768px breakpoint (the base rule, mobile
- * first), --panel-w-default is overridden to the compact tier's width —
- * Panel.tsx already resolves `min(var(--panel-w-default), 100%)` for its
- * default tier="default" call sites (NeoFeedPanel, SpaceWeatherPanel; see
- * Panel.tsx), so this is a pure CSS override, no JavaScript width branch,
- * meaning the server render and the first client render always agree. At
- * or above the breakpoint the override is lifted back to the canonical
- * default-tier width declared in globals.css (--panel-w-default: 64ch).
- * Panel's own container query (Panel.module.css, keyed to this "panels"
- * container's own inline-size) still decides, independently, whether
- * whatever width results here can hold a full ASCII character grid at all.
+ * Panel tier snapping is now entirely owned by Panel.module.css's
+ * container-query tier ladder, keyed to THIS container's real inline size
+ * (512px / 704px thresholds) — not by a viewport `@media` breakpoint
+ * overriding --panel-w-default. A prior version of this rule did exactly
+ * that (swapped --panel-w-default to the compact width below a 768px
+ * *viewport* media query), which is what caused the phone-width horizontal
+ * overflow this fix addresses: the JS-rendered ASCII border string stayed a
+ * fixed 64 characters while only the CSS box narrowed, and the two
+ * measurements (viewport width vs. container width) could also disagree
+ * with each other independently of that. Panel.tsx now renders every tier's
+ * row pair and Panel.module.css's container queries pick both the visible
+ * row and the box width from the same measurement, so there is only one
+ * mechanism left, not two.
  */
 .panels {
   width: 100%;
@@ -63,16 +66,21 @@
     calc(var(--space-lg) + env(safe-area-inset-left));
   container-type: inline-size;
   container-name: panels;
-
-  --panel-w-default: var(--panel-w-compact);
 }
 
-@media (min-width: 768px) {
-  .panels {
-    --panel-w-default: 64ch;
-  }
-}
-
+/*
+ * Also a "panels"-named inline-size container (defect fix — see
+ * 01-FIX-panel-overflow.md), independently of `.panels` above. `.legend`
+ * is a sibling of `.panels` in DashboardShell.tsx, not a descendant, so
+ * without its own container declaration the Legend panel's `@container
+ * panels (...)` rules in Panel.module.css would never match any ancestor
+ * and it would be stuck at the compact tier forever, however much real
+ * width it has. Two same-named containers, each scoping its own
+ * descendants, is the exact multi-region pattern the container comment
+ * above already anticipates (a future narrower HUD column declaring its
+ * own "panels" container) — this is that pattern applied to the region
+ * that already existed. Not a change to `Legend.tsx` itself.
+ */
 .legend {
   width: 100%;
   max-width: var(--panel-w-wide);
@@ -83,4 +91,6 @@
     calc(var(--space-lg) + env(safe-area-inset-right))
     var(--space-3xl)
     calc(var(--space-lg) + env(safe-area-inset-left));
+  container-type: inline-size;
+  container-name: panels;
 }

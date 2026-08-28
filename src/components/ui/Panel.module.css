@@ -1,3 +1,18 @@
+/*
+ * Box width tier ladder (defect fix — see 01-FIX-panel-overflow.md).
+ *
+ * Base width is always the compact tier (44ch / 352px) — the narrowest grid
+ * every panel can render. `.panelDefault` / `.panelWide` are modifier
+ * classes Panel.tsx adds only up to the panel's own requested `tier` prop
+ * (a MAXIMUM, never a promotion), and the container queries below only
+ * apply those wider widths once the "panels" named container (declared on
+ * DashboardShell.module.css's .panels) actually measures enough real
+ * inline size to hold that tier's full character grid without overflowing.
+ * This is the same 512px / 704px threshold the row-reveal queries below
+ * use, so the box width and the visible ASCII row always agree — the two
+ * mechanisms that disagreed before this fix (a JS-fixed-length string vs a
+ * CSS-only box width) no longer exist; both are driven by these queries.
+ */
 .panel {
   background: var(--color-surface);
   color: var(--color-nominal);
@@ -7,6 +22,26 @@
   border-left: 1px solid var(--color-dim);
   border-right: 1px solid var(--color-dim);
   margin: 0 auto;
+  width: min(var(--panel-w-compact), 100%);
+}
+
+/* 512px = the default tier's 64ch at the measured 8px/char VT323 advance
+   (see globals.css --panel-ch-default / constraint 2) — only switch the box
+   (and, below, the matching ASCII row) up to the default tier once the
+   container can actually hold the full 64ch grid without overflowing. */
+@container panels (min-width: 512px) {
+  .panelDefault,
+  .panelWide {
+    width: min(var(--panel-w-default), 100%);
+  }
+}
+
+/* 704px = the wide tier's 88ch at the same advance — analogous to the
+   512px rule above, one tier up. */
+@container panels (min-width: 704px) {
+  .panelWide {
+    width: min(var(--panel-w-wide), 100%);
+  }
 }
 
 .chromeRow {
@@ -15,6 +50,52 @@
   color: var(--color-dim);
   font: inherit;
   white-space: pre;
+}
+
+/*
+ * Row-reveal tier ladder, paired 1:1 with the box-width ladder above.
+ * Panel.tsx renders one top+bottom row pair per allowed tier (never more
+ * than the panel's own requested maximum — see resolveAllowedTiers in
+ * Panel.tsx); these rules pick exactly one of those rendered pairs to show,
+ * using `display: none` (never `visibility`/`opacity`) so a hidden row
+ * contributes nothing to intrinsic width — the exact mechanism that let the
+ * old fixed-64-char string keep the container wide even while "hidden"
+ * would have. Compact is the mobile-first default (always visible unless a
+ * wider tier's query below overrides it); a tier that Panel.tsx never
+ * rendered (because it exceeds the panel's requested maximum) simply has no
+ * matching element, so these selectors are inert for it — no extra
+ * tier-awareness needed here.
+ */
+.tierRowCompact {
+  display: block;
+}
+
+.tierRowDefault {
+  display: none;
+}
+
+.tierRowWide {
+  display: none;
+}
+
+@container panels (min-width: 512px) {
+  .tierRowCompact {
+    display: none;
+  }
+
+  .tierRowDefault {
+    display: block;
+  }
+}
+
+@container panels (min-width: 704px) {
+  .tierRowDefault {
+    display: none;
+  }
+
+  .tierRowWide {
+    display: block;
+  }
 }
 
 .title {
