@@ -1,0 +1,22 @@
+/*
+ * SPACE WEATHER panel body (CRT-05). Three groups — bulletins, flares,
+ * CME/storms — each with a plain dim sub-label standing alone at label
+ * size, above its own stack of Alert-rendered bulletins.
+ */
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+}
+
+.groupLabel {
+  margin: 0 0 var(--space-xs);
+  color: var(--color-dim);
+  font-size: var(--type-label);
+  line-height: var(--leading-label);
+}
