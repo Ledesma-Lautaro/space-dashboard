@@ -1,0 +1,28 @@
+/*
+ * Alert (D-15) — its own component, its own spacing, not a Panel variant.
+ * No character-grid chrome, so text wraps freely (white-space + word-break)
+ * rather than truncating the way a bordered Panel row does.
+ */
+.alert {
+  display: block;
+  margin: var(--space-sm) 0;
+  padding: var(--space-sm);
+  padding-left: calc(var(--space-sm) + 2px);
+  border-left: 2px solid currentColor;
+  font-family: var(--font-terminal), monospace;
+  font-size: var(--type-body);
+  line-height: var(--leading-body);
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-shadow: 0 0 var(--glow-radius-normal) currentColor;
+}
+
+/* Base state of everything (D-13). */
+.nominal {
+  color: var(--color-nominal);
+}
+
+/* Reserved for the exceptional only (D-13) — never default UI chrome. */
+.attention {
+  color: var(--color-alert);
+}
