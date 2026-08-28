@@ -25,6 +25,22 @@ export const PANEL_TIER_CH: Record<PanelTier, number> = {
   wide: 88,
 };
 
+/**
+ * Ascending tier order, narrowest first. `tier` on `PanelProps` is a MAXIMUM
+ * a panel will ever render at, not a fixed choice — `resolveAllowedTiers`
+ * below returns every tier from "compact" up to (and including) the
+ * requested one, and the component renders one ASCII row pair + one box
+ * width per allowed tier, letting CSS container queries (Panel.module.css)
+ * reveal exactly the pair that fits the real space available. A panel
+ * requesting "compact" only ever gets the compact pair; it can never be
+ * promoted wider by CSS having more room than it asked for.
+ */
+const PANEL_TIER_ORDER: PanelTier[] = ["compact", "default", "wide"];
+
+export function resolveAllowedTiers(maxTier: PanelTier): PanelTier[] {
+  return PANEL_TIER_ORDER.slice(0, PANEL_TIER_ORDER.indexOf(maxTier) + 1);
+}
+
 // "+-- " (4 chars) + " --" (3 chars) + the closing "+" (1 char) = 8 fixed
 // chrome characters on the top row. The bottom row spends its two "+"
 // characters on the ends of a full-width hyphen run instead.
@@ -91,43 +107,89 @@ export interface PanelProps {
   children: ReactNode;
 }
 
-export function Panel({ title, tier = "default", children }: PanelProps) {
-  const safeTitle = truncateTitle(title, tier);
-  const topRow = buildBorderRow(title, tier);
-  const bottomRow = buildBottomRow(tier);
+// Maps each tier to the CSS module class that reveals its row pair / box
+// width only once the "panels" named container (DashboardShell.module.css)
+// actually measures enough real inline size to hold that tier's full
+// character grid — see the tier-reveal container queries in
+// Panel.module.css. Class names are looked up by tier rather than
+// interpolated into a template string so a typo can never silently produce
+// an unmatched (thus permanently invisible) CSS Modules class.
+const ROW_TIER_CLASS: Record<PanelTier, string> = {
+  compact: styles.tierRowCompact,
+  default: styles.tierRowDefault,
+  wide: styles.tierRowWide,
+};
 
-  // Split the already-computed top row string around the title substring so
-  // the title can carry emphasis color while the surrounding chrome stays
-  // dim — this reuses buildBorderRow's own output as the single source of
-  // truth rather than re-deriving the padding math a second time.
-  const titleStart = topRow.indexOf(safeTitle, 4);
-  const prefix = topRow.slice(0, titleStart);
-  const suffix = topRow.slice(titleStart + safeTitle.length);
+// Box width modifier classes are cumulative (unlike the row classes above):
+// a panel allowed up to "wide" needs BOTH the default-width step and the
+// wide-width step present so the box can climb tier-by-tier as the
+// container grows, capping at its own requested maximum — never at a wider
+// tier than it asked for. See BOX_TIER_MODIFIER_CLASSES below.
+const BOX_TIER_MODIFIER_CLASSES: Record<PanelTier, string[]> = {
+  compact: [],
+  default: [styles.panelDefault],
+  wide: [styles.panelDefault, styles.panelWide],
+};
+
+export function Panel({ title, tier = "default", children }: PanelProps) {
+  const allowedTiers = resolveAllowedTiers(tier);
+
+  const boxClassName = [styles.panel, ...BOX_TIER_MODIFIER_CLASSES[tier]].join(" ");
+
+  // One row pair per allowed tier (never more than the requested maximum —
+  // see resolveAllowedTiers). Each tier's title truncation, padding, and
+  // assertRowLength invariant are computed independently via
+  // buildBorderRow/buildBottomRow, exactly as before, just once per tier
+  // instead of once per panel.
+  const tierRows = allowedTiers.map((rowTier) => {
+    const safeTitle = truncateTitle(title, rowTier);
+    const topRow = buildBorderRow(title, rowTier);
+    const bottomRow = buildBottomRow(rowTier);
+
+    // Split the already-computed top row string around the title substring
+    // so the title can carry emphasis color while the surrounding chrome
+    // stays dim — this reuses buildBorderRow's own output as the single
+    // source of truth rather than re-deriving the padding math a second
+    // time.
+    const titleStart = topRow.indexOf(safeTitle, 4);
+    const prefix = topRow.slice(0, titleStart);
+    const suffix = topRow.slice(titleStart + safeTitle.length);
+
+    return { tier: rowTier, safeTitle, prefix, suffix, bottomRow };
+  });
 
   return (
-    <section
-      className={styles.panel}
-      style={{ width: `min(var(--panel-w-${tier}), 100%)` }}
-      aria-label={title}
-    >
+    <section className={boxClassName} aria-label={title}>
       {/*
         Plain-text title, always in the markup. CSS alone decides — via the
         sub-compact container query in Panel.module.css — whether this or
-        the ASCII chrome row's decorative title is visible; no JavaScript
-        width branch, no resize observer, no hydration surface. The ASCII
-        rows are aria-hidden below, so this plain title is the only
-        presentation ever exposed to the accessibility tree.
+        one of the ASCII chrome rows' decorative titles is visible; no
+        JavaScript width branch, no resize observer, no hydration surface.
+        The ASCII rows are aria-hidden below, so this plain title is the
+        only presentation ever exposed to the accessibility tree.
       */}
       <p className={styles.plainTitle}>{title}</p>
-      <pre className={styles.chromeRow} aria-hidden="true">
-        {prefix}
-        <span className={styles.title}>{safeTitle}</span>
-        {suffix}
-      </pre>
+      {tierRows.map((row) => (
+        <pre
+          key={`top-${row.tier}`}
+          className={`${styles.chromeRow} ${ROW_TIER_CLASS[row.tier]}`}
+          aria-hidden="true"
+        >
+          {row.prefix}
+          <span className={styles.title}>{row.safeTitle}</span>
+          {row.suffix}
+        </pre>
+      ))}
       <div className={styles.body}>{children}</div>
-      <pre className={styles.chromeRow} aria-hidden="true">
-        {bottomRow}
-      </pre>
+      {tierRows.map((row) => (
+        <pre
+          key={`bottom-${row.tier}`}
+          className={`${styles.chromeRow} ${ROW_TIER_CLASS[row.tier]}`}
+          aria-hidden="true"
+        >
+          {row.bottomRow}
+        </pre>
+      ))}
     </section>
   );
 }
