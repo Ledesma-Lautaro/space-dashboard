@@ -75,7 +75,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **RESP-01**: Dashboard is usable on mobile and desktop as a single screen with scroll, with no separate routes
 - [ ] **RESP-02**: 3D canvas resizes correctly on viewport and orientation change without distorting the camera aspect ratio
 - [ ] **RESP-03**: Mobile browser chrome (dynamic viewport height) does not clip the canvas or the panels
-- [ ] **RESP-04**: A legend explains what the CRT color coding means
+- [x] **RESP-04**: A legend explains what the CRT color coding means
 
 ### Entrega
 
@@ -171,7 +171,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RESP-01 | Phase 1 | Complete |
 | RESP-02 | Phase 2 | Pending |
 | RESP-03 | Phase 12 | Pending |
-| RESP-04 | Phase 1 | Pending |
+| RESP-04 | Phase 1 | Complete |
 | SHIP-01 | Phase 12 | Pending |
 | SHIP-02 | Phase 12 | Pending |
 | SHIP-03 | Phase 12 | Pending |

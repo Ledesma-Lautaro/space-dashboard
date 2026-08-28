@@ -1,0 +1,85 @@
+/*
+ * Legend strip layout and swatch colouring (RESP-04, D-13, D-14, CRT-10).
+ * Panel supplies the chrome; this file only lays out the entries, the
+ * qualifying note, the brightness sample, and the CRT control inside it.
+ */
+
+.strip {
+  margin-top: var(--space-xl);
+}
+
+.entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.entry {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-xs);
+}
+
+.swatch {
+  font: inherit;
+}
+
+/* Each swatch is coloured by the token family it names, per entry — never a
+   hardcoded hex, always the semantic role token (D-02). */
+.toneNominal {
+  color: var(--color-nominal);
+  text-shadow: 0 0 var(--glow-radius-normal) currentColor;
+}
+
+/* Accent reserved for exactly the legend's magenta swatch and its label
+   text (UI-SPEC Color section, item 2) — never the meaning text next to it,
+   which stays in the default body colour like ordinary explanatory copy. */
+.toneAlert {
+  color: var(--color-alert);
+  text-shadow: 0 0 var(--glow-radius-normal) currentColor;
+}
+
+.label {
+  min-width: 8ch;
+}
+
+.separator {
+  color: var(--color-dim);
+}
+
+.meaning {
+  color: var(--color-nominal);
+}
+
+.note {
+  margin: var(--space-xs) 0 0;
+  padding-left: 2ch;
+  color: var(--color-dim);
+}
+
+.sample {
+  margin: var(--space-xs) 0 0;
+  color: var(--color-dim);
+}
+
+.sampleDim {
+  color: var(--color-nominal-dim);
+  text-shadow: 0 0 var(--glow-radius-dim) currentColor;
+}
+
+.sampleNormal {
+  color: var(--color-nominal);
+  text-shadow: 0 0 var(--glow-radius-normal) currentColor;
+}
+
+.sampleBright {
+  color: var(--color-nominal-bright);
+  text-shadow: 0 0 var(--glow-radius-bright) currentColor;
+}
+
+.control {
+  margin-top: var(--space-md);
+}

@@ -3,16 +3,16 @@ gsd_state_version: 1.0
 current_phase: 1
 current_phase_name: Terminal Design System & App Shell
 status: executing
-stopped_at: Completed 01-05-PLAN.md
-last_updated: "2026-08-28T16:56:24.356Z"
+stopped_at: Completed 01-06-PLAN.md
+last_updated: "2026-08-28T17:10:54.256Z"
 last_activity: 2026-08-26
 last_activity_desc: Roadmap created, 51/51 v1 requirements mapped across 12 phases
-state_head: 0eb0105d0b5051f52e5d6c81cb116690fca92e10
+state_head: c17fcc2722018c47b40f88b8cc3c836bcdf326b7
 progress:
   total_phases: 12
   completed_phases: 0
   total_plans: 7
-  completed_plans: 5
+  completed_plans: 6
   percent: 0
 ---
 
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-08-26)
 ## Current Position
 
 Phase: 1 of 12 (Terminal Design System & App Shell)
-Plan: 5 of 7 in current phase
+Plan: 6 of 7 in current phase
 Status: Ready to execute
 Last activity: 2026-08-26 — Roadmap created, 51/51 v1 requirements mapped across 12 phases
 
@@ -63,6 +63,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P03 | 20min | 2 tasks | 4 files |
 | Phase 01-terminal-design-system-app-shell P04 | 30min | 3 tasks | 6 files |
 | Phase 01 P05 | 35min | 3 tasks | 6 files |
+| Phase 01 P06 | ~15min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,8 @@ Recent decisions affecting current work:
 - [Phase 1]: Alert takes a nullable content prop (subject/state/qualifier?/value?) rather than required individual props, so rendering nothing on absent content is expressible directly by the caller
 - [Phase 1]: NeoObject.orbital_data typed optional - feed list entries carry a thinner record than the single-object lookup on the live NASA API
 - [Phase 1]: Both panels' Alert-rendered bulletins (notifications, flares, CME/storms) reuse the same component and grammar formatter end to end, with severity derived only from facts already on the source record (flare class letter order, max Kp) and no NOAA G-scale mapping
+- [Phase 1]: Legend accent colour scoped to swatch + label only for the magenta entry, matching the UI-SPEC's explicit reservation list
+- [Phase 1]: Legend strip top spacing implemented in Legend.module.css rather than DashboardShell.module.css to stay within the plan's authorized file scope
 
 ### Pending Todos
 
@@ -106,6 +109,6 @@ Items acknowledged and deferred at milestone close, most recent first:
 
 ## Session Continuity
 
-Last session: 2026-08-28T16:56:24.296Z
-Stopped at: Completed 01-05-PLAN.md
+Last session: 2026-08-28T17:10:44.027Z
+Stopped at: Completed 01-06-PLAN.md
 Resume file: None
