@@ -57,8 +57,8 @@
      only opacity scales with --crt-intensity, driven by CrtControl. */
   --crt-intensity: 1;
   --crt-scanline-pitch: 4px;
-  --crt-scanline-opacity: calc(0.25 * var(--crt-intensity));
-  --crt-vignette-opacity: calc(0.45 * var(--crt-intensity));
+  --crt-scanline-opacity: calc(0.25 * var(--crt-intensity) * var(--crt-2d-scale));
+  --crt-vignette-opacity: calc(0.45 * var(--crt-intensity) * var(--crt-2d-scale));
 
   /* Phosphor glow radii — applied per text element via text-shadow, not part
      of the fixed overlay, so glow scales with each element's own brightness
@@ -84,6 +84,31 @@
   /* Panel body row cap (see Panel.module.css .body) — 8 visible rows of
      --leading-body before the body switches to internal vertical scroll. */
   --panel-body-rows: 8;
+
+  /* Responsive contract (UI-SPEC "Responsive Contract"). Single breakpoint
+     at 768px — below it: mobile layout; at or above it: desktop layout.
+     Documentary only: CSS custom properties cannot be substituted inside a
+     @media condition, so every media query in the project inlines the
+     literal 768px value rather than referencing this token. */
+  --breakpoint-desktop: 768px;
+
+  /* Canvas region height tokens (D-06/D-07, T-01-18). Small-viewport-height
+     unit exclusively — never the bare or dynamic viewport-height unit — so
+     the hero region and the panels below it never exceed the visible area
+     before the first scroll, and nothing resizes/jumps as mobile browser
+     chrome collapses or reappears. This is what turns Phase 12's mobile
+     chrome requirement (RESP-03) into a verification pass rather than a
+     rewrite. */
+  --canvas-h-desktop: 100svh;
+  --canvas-h-mobile: 60svh;
+
+  /* Independent 2D CRT overlay strength seam (T-01-20). Multiplies
+     alongside --crt-intensity in the scanline/vignette opacity
+     calculations below, so the postprocessing phase's canvas-shader CRT
+     source can be balanced against this CSS layer without touching the
+     user-facing intensity level (CrtControl). Defaults to 1 — nothing
+     changes visually until a later phase dials it. */
+  --crt-2d-scale: 1;
 }
 
 /* Shape policy: no rounded corners anywhere — rounding fights the

@@ -5,30 +5,24 @@
   min-height: 100svh;
 }
 
+/*
+ * Reserved render-target region (D-06/D-07/D-10). Single 768px breakpoint
+ * (UI-SPEC Responsive Contract): mobile height is the base rule, desktop
+ * height applies at or above the breakpoint. Small-viewport-height unit
+ * only, sourced from the canvas height tokens in globals.css — never the
+ * bare or dynamic viewport-height unit (T-01-18). ScenePlaceholder fills
+ * this box and owns its own internal centring/background.
+ */
 .canvas {
   width: 100%;
-  height: 100svh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
+  height: var(--canvas-h-mobile);
   background: var(--color-bg);
 }
 
-.canvasHeading {
-  margin: 0;
-  color: var(--color-nominal);
-  font-size: var(--type-display);
-  line-height: var(--leading-display);
-  text-shadow: 0 0 var(--glow-radius-bright) currentColor;
-}
-
-.canvasSubheading {
-  margin: 0;
-  color: var(--color-dim);
-  font-size: var(--type-label);
-  line-height: var(--leading-label);
+@media (min-width: 768px) {
+  .canvas {
+    height: var(--canvas-h-desktop);
+  }
 }
 
 /*
@@ -37,21 +31,56 @@
  * ancestor container can never capture the query by accident, and so this
  * stays correct when Phase 10 nests a Panel inside a narrower HUD column
  * that declares its own "panels"-named container.
+ *
+ * Content column: capped at the wide tier's width so the layout does not
+ * stretch across an ultrawide display, centred with margin: auto, with
+ * horizontal gutters from the large spacing token plus safe-area insets so
+ * content clears a notch or a rounded corner on a phone.
+ *
+ * Panel tier snapping: below the 768px breakpoint (the base rule, mobile
+ * first), --panel-w-default is overridden to the compact tier's width —
+ * Panel.tsx already resolves `min(var(--panel-w-default), 100%)` for its
+ * default tier="default" call sites (NeoFeedPanel, SpaceWeatherPanel; see
+ * Panel.tsx), so this is a pure CSS override, no JavaScript width branch,
+ * meaning the server render and the first client render always agree. At
+ * or above the breakpoint the override is lifted back to the canonical
+ * default-tier width declared in globals.css (--panel-w-default: 64ch).
+ * Panel's own container query (Panel.module.css, keyed to this "panels"
+ * container's own inline-size) still decides, independently, whether
+ * whatever width results here can hold a full ASCII character grid at all.
  */
 .panels {
   width: 100%;
+  max-width: var(--panel-w-wide);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-lg);
-  padding: var(--space-2xl) var(--space-lg) var(--space-lg);
+  margin: 0 auto;
+  padding: var(--space-2xl)
+    calc(var(--space-lg) + env(safe-area-inset-right))
+    var(--space-lg)
+    calc(var(--space-lg) + env(safe-area-inset-left));
   container-type: inline-size;
   container-name: panels;
+
+  --panel-w-default: var(--panel-w-compact);
+}
+
+@media (min-width: 768px) {
+  .panels {
+    --panel-w-default: 64ch;
+  }
 }
 
 .legend {
   width: 100%;
+  max-width: var(--panel-w-wide);
   display: flex;
   justify-content: center;
-  padding: var(--space-lg) var(--space-lg) var(--space-3xl);
+  margin: 0 auto;
+  padding: var(--space-lg)
+    calc(var(--space-lg) + env(safe-area-inset-right))
+    var(--space-3xl)
+    calc(var(--space-lg) + env(safe-area-inset-left));
 }
