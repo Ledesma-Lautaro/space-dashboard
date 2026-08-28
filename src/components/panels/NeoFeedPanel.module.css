@@ -1,0 +1,73 @@
+/*
+ * NEO FEED panel body (CRT-02). Each fixture object renders as a two-line
+ * row: a name/classification line, then a fixed `ch`-column numeric grid so
+ * digits align by place value down the whole column, which is the entire
+ * reason for choosing a monospaced face over a fluid table.
+ */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+}
+
+.nameLine {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-sm);
+  color: var(--color-nominal);
+}
+
+.name {
+  color: var(--color-nominal);
+}
+
+/*
+ * NASA's hazard classification, surfaced verbatim and labelled as NASA's
+ * own — not a computed judgement of this app's. No alarm colour attaches to
+ * the routine (non-hazardous) case; the reserved alert token marks the
+ * flagged case with brightness only, never a blinking or exclamatory
+ * treatment (D-13).
+ */
+.hazardClear {
+  font-size: var(--type-label);
+  line-height: var(--leading-label);
+  color: var(--color-dim);
+}
+
+.hazardFlagged {
+  font-size: var(--type-label);
+  line-height: var(--leading-label);
+  color: var(--color-alert);
+}
+
+.dataGrid {
+  display: grid;
+  grid-template-columns: 11ch 9ch 11ch 13ch;
+  column-gap: 1ch;
+  font-size: var(--type-label);
+  line-height: var(--leading-label);
+  color: var(--color-dim);
+}
+
+.date {
+  text-align: left;
+}
+
+.numeric {
+  text-align: right;
+}
+
+.numericValue {
+  color: var(--color-nominal);
+}
+
+.numericUnit {
+  color: var(--color-dim);
+}
