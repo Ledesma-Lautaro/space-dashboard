@@ -1,9 +1,9 @@
-import { ScenePlaceholder } from "@/components/canvas/ScenePlaceholder";
 import { NeoFeedPanel } from "@/components/panels/NeoFeedPanel";
 import { SpaceWeatherPanel } from "@/components/panels/SpaceWeatherPanel";
 import { Legend } from "@/components/ui/Legend";
 
 import styles from "./DashboardShell.module.css";
+import { SceneCanvas } from "../canvas/SceneCanvas";
 
 /**
  * Single-screen layout composition (RESP-01, D-06/D-07/D-09) and the CRT
@@ -17,7 +17,7 @@ export function DashboardShell() {
         className={styles.canvas}
         aria-label="Solar system scene placeholder"
       >
-        <ScenePlaceholder />
+        <SceneCanvas/>
       </section>
 
       <section className={styles.panels}>
