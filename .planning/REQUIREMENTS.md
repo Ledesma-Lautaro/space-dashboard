@@ -28,15 +28,15 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Escena 3D (Three.js)
 
-- [ ] **SCENE-01**: User sees a stylized solar system rendered with vanilla Three.js — sun and planets as flat-shaded spheres, orbits as line geometry, schematic (not realistic) scale, no textures
-- [ ] **SCENE-02**: Scene carries a visible "not to scale" label so schematic scale is never mistaken for accuracy
-- [ ] **SCENE-03**: Scene mounts and unmounts cleanly under React StrictMode without creating duplicate renderers, canvases, or animation loops
-- [ ] **SCENE-04**: All Three.js geometries, materials, textures and render targets are disposed on unmount, with no GPU memory growth across repeated remounts
+- [x] **SCENE-01**: User sees a stylized solar system rendered with vanilla Three.js — sun and planets as flat-shaded spheres, orbits as line geometry, schematic (not realistic) scale, no textures
+- [x] **SCENE-02**: Scene carries a visible "not to scale" label so schematic scale is never mistaken for accuracy
+- [x] **SCENE-03**: Scene mounts and unmounts cleanly under React StrictMode without creating duplicate renderers, canvases, or animation loops
+- [x] **SCENE-04**: All Three.js geometries, materials, textures and render targets are disposed on unmount, with no GPU memory growth across repeated remounts
 - [ ] **SCENE-05**: User sees the fetched NEOs rendered as objects inside the 3D scene, positioned and sized by a documented schematic mapping from miss distance and estimated diameter
 - [ ] **SCENE-06**: User sees asteroid orbits drawn as true ellipses computed from `orbital_data` (semi-major axis, eccentricity, inclination, ascending node longitude, perihelion argument)
 - [ ] **SCENE-07**: User sees CMEs rendered as expanding cones from the Sun, oriented and shaped by the real `speed`, `halfAngle`, `latitude` and `longitude` from `/DONKI/CMEAnalysis`
-- [ ] **SCENE-08**: User can orbit, pan and zoom the camera with both mouse and touch
-- [ ] **SCENE-09**: Scene detects `webglcontextlost`, shows an in-theme "SIGNAL LOST" state instead of a blank canvas, and restores on `webglcontextrestored`
+- [x] **SCENE-08**: User can orbit, pan and zoom the camera with both mouse and touch
+- [x] **SCENE-09**: Scene detects `webglcontextlost`, shows an in-theme "SIGNAL LOST" state instead of a blank canvas, and restores on `webglcontextrestored`
 
 ### Interacción 3D (Raycasting + HUD)
 
@@ -73,7 +73,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Responsive y Accesibilidad
 
 - [x] **RESP-01**: Dashboard is usable on mobile and desktop as a single screen with scroll, with no separate routes
-- [ ] **RESP-02**: 3D canvas resizes correctly on viewport and orientation change without distorting the camera aspect ratio
+- [x] **RESP-02**: 3D canvas resizes correctly on viewport and orientation change without distorting the camera aspect ratio
 - [ ] **RESP-03**: Mobile browser chrome (dynamic viewport height) does not clip the canvas or the panels
 - [x] **RESP-04**: A legend explains what the CRT color coding means
 

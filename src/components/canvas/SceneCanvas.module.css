@@ -14,3 +14,14 @@
   position: absolute;
   inset: 0;
 }
+
+.notToScale {
+  position: absolute;
+  left: var(--space-md);
+  bottom: var(--space-md);
+  margin: 0;
+  color: var(--color-dim);
+  font-size: var(--type-label);
+  line-height: var(--leading-label);
+  pointer-events: none;
+}
